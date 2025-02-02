@@ -1,0 +1,16 @@
+pip3 install virtualenv
+
+CORRER EN POWERSHELL AS ADMIN:
+set-Executionpolicy -Executionpolicy Remotesigned -Scope CurrentUser
+
+then:
+
+virtualenv env
+
+
+pip3 install flask flask-sqlalchemy
+
+
+
+
+

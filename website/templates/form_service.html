@@ -1,0 +1,92 @@
+{% extends "base.html" %}{% block title %} Create {% endblock %}
+
+
+
+{% block content %}
+<h1>This is the create page</h1>
+
+
+
+
+
+<br>
+<br>
+<br>
+<br><br>
+
+
+{% if create %}
+<form action="/create_service" method="POST">
+
+
+
+{% else %}
+
+<form action="/edit_service/{{service_id}}" method="POST">
+
+
+
+{% endif %}
+<form action="/create_service" method="POST">
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <label for="name">Name</label>
+      <input type="text" class="form-control" id="name" name="name" placeholder="Name">
+    </div>
+  </div>
+
+    
+
+
+  <div class="form-group">
+
+    <label for="inputAddress">Price</label>
+    <input type="number" id="price" name="price" step="0.01" min="0" placeholder="0.00">
+
+
+    <label for="inputAddress">Cost</label>
+    <input type="number" id="cost" name="cost" step="0.01" min="0" placeholder="0.00">
+
+
+
+
+        
+  <div class="form-row">
+      <!-- <div class="form-group col-md-6"> -->
+        <!-- <label for="inputCity">City</label> -->
+        <!-- <input type="text" class="form-control" id="inputCity"> -->
+      <!-- </div> -->
+    <div class="form-group col-md-4">
+
+        <label for="inputState">Category</label>
+        <select id="category" name="category" class="form-control">
+          <option selected>Facial</option>
+          <option>Corporal</option>
+          <option>Certificado</option>
+        </select>
+
+        
+    </div>
+
+
+
+
+    </div>
+
+    {% if create %}
+      <button type="submit" class="btn btn-primary">Create Service</button>
+
+  
+    {% else %}
+    
+      <button type="submit" class="btn btn-primary">Edit Service</button>
+    
+
+    {% endif %}
+
+  </form>
+
+
+
+
+{% endblock %}

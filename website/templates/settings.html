@@ -1,0 +1,39 @@
+{% extends "base.html" %}{% block title %} Settings {% endblock %}
+
+
+
+{% block content %}
+<h1>This is the Setting page</h1>
+
+
+<ul>
+    <li>
+        <a href="{{url_for('views.month')}}">month</a>
+    </li>
+
+    <li>
+        <a href="{{url_for('services.create_service')}}">Create service</a>
+        
+    </li>
+
+
+    <li>
+        <a href="{{url_for('services.view_services')}}">View Services</a>
+
+    </li>
+
+    <li>
+        <a href="{{url_for('users.view_users')}}">View Users</a>
+
+    </li>
+
+    <li>
+        <a href="{{url_for('users.create_user')}}">Create Users</a>
+
+    </li>
+
+
+</ul>
+
+
+{% endblock %}

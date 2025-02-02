@@ -1,0 +1,51 @@
+{% extends "base.html" %}{% block title %} users list {% endblock %}
+
+
+
+{% block content %}
+
+    <H1>This is the view users page</H1>
+
+    <button class="btn btn-secondary"> 
+
+        <a href="{{url_for('users.create_user')}}">Create User</a>
+
+
+    </button>
+        
+  <table id="data" class="table table-striped">
+
+
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Status</th>
+        <th>Next Appoiment</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for user in user_list %}
+        <tr>
+          <td>{{ user.name }}</td>
+          <td>{{ user.email }}</td>
+          <td>{{ user.has_logged_in }}</td>
+          <td> Next Appoiment</td>
+          <td>
+            <ul>
+                <li><a href="{{ url_for('users.edit_user', user_id=user.id) }}">Edit</a></li>
+                <li><a href="{{url_for('users.delete_user', user_id=user.id)}}">Delete</a></li>
+                <li><a href="{{url_for('users.delete_user', user_id=user.id)}}">Admin</a></li>
+
+            </ul>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+    
+
+
+
+{% endblock %}
