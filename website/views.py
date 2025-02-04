@@ -2,12 +2,12 @@ from flask import Blueprint, render_template, redirect, url_for, request, sessio
 from .models import Admin, User, Service, Appointment
 from . import db
 from datetime import datetime
+from flask_login import login_required, current_user
 
+#!! check flask-wtf
 
 #se va a definir los blueprints, son un monton de rutas para poder dividir el codigo
-
 views = Blueprint('views', __name__)
-
 
 
 @views.route('/')
@@ -25,9 +25,8 @@ def index():
 
 
 @views.route('/home' , methods = ['GET'])
+@login_required
 def home():
-    #!! login required
-
     if request.method == 'GET':
         print("EN EL GET DE HOME")
         if 'admin' in session:
@@ -35,25 +34,25 @@ def home():
 
     access = session.get('admin')
     
-
     return render_template('home.html', access=access)
 
 
 
 @views.route('/settings', methods = ['GET'])
+@login_required
 def settings():
-    #!! login required
-
     if request.method == 'GET':
         print("Settings get")
         if not "admin" in session:
             print("cannot access")
+            #!! o mandar a otro lado o modificar el html para user settings
         else:
             print("hello!!")
             return render_template('settings.html')
         
 
 @views.route('/month', methods = ['GET'])
+@login_required
 def month():
     if request.method == 'GET':
         print('month get')

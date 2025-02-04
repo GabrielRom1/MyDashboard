@@ -2,14 +2,15 @@ from flask import Blueprint, render_template, redirect, url_for, request, sessio
 from .models import Admin, User, Service, Appointment
 from . import db
 from datetime import datetime
-
+from flask_login import login_required, current_user
 
 services = Blueprint('services', __name__)
 
 
 @services.route('/create_service', methods = ['GET', 'POST'])
+@login_required
 def create_service():
-    #!! login y admin required
+    #!! admin required
 
     if request.method == 'GET':
         print('create get')
@@ -45,8 +46,9 @@ def create_service():
 
 
 @services.route('/view_services', methods = ['GET'])
+@login_required
 def view_services():
-    #!! login y admin required
+    #!! admin required
 
     services = Service.query.all()
 
@@ -58,8 +60,9 @@ def view_services():
     return render_template( 'view_services.html', services_list = services)
 
 @services.route('/edit_service/<service_id>', methods = ['GET', 'POST'])
+@login_required
 def edit_service(service_id):
-    #!! login y admin required
+    #!! admin required
 
 
     if request.method == 'GET':
@@ -95,8 +98,9 @@ def edit_service(service_id):
 
     
 @services.route('/delete_service/<service_id>', methods = ['GET', 'POST'])
+@login_required
 def delete_service(service_id):
-    #!! login y admin required
+    #!!  admin required
 
     print(service_id)
 
@@ -111,5 +115,4 @@ def delete_service(service_id):
         return ("error")
 
     return redirect(url_for("services.view_services"))
-
 

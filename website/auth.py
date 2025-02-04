@@ -2,6 +2,9 @@
 from flask import Blueprint,  render_template, request, jsonify, url_for, flash, session, redirect
 from . import db
 from .models import Admin, User
+from flask_login import login_user
+from flask_login import login_required, current_user
+from .users import create_user
 
 
 #se va a definir los blueprints, son un monton de rutas para poder dividir el codigo
@@ -36,12 +39,11 @@ def login():
             if password == admin.password:
                 print("admin password correct ")
                 session['admin'] = True
-            
             else:
                 print("Password incorrect")
                 flash("Incorrect password", 'danger')
 
-                return "error en login post"
+                return "error en login post o admin con mal password"
         elif user:
             print(user.name)
             if password == user.password:
@@ -52,6 +54,10 @@ def login():
         else:
             flash("No user", 'danger')
             return ("errorrrrrrr")
+        
+         # if the above check passes, then we know the user has the right credentials
+        login_user(user)
+        # login_user(user, remember=remember)
 
         return redirect(url_for('views.home'))
         
@@ -60,6 +66,7 @@ def login():
 
 
 @auth.route('/logout')
+@login_required
 def logout():
     #!! login required ??
 
@@ -67,11 +74,18 @@ def logout():
     return redirect(url_for('auth.login') )
 
 
-@auth.route('/sign-up', methods = ['POST', 'GET'])
-def sign_up():
+@auth.route('/signup', methods = ['POST', 'GET'])
+def signup():
 
     if request.method == 'GET':
         render_template('signup.html')
+    elif request.method == 'POST':
+        if create_user(True):
+            print("user created succesfully from signup")
+            return redirect(url_for('auth.login'))
+        else:
+            print("error when signup create user")
+
 
     # AQUI LEES EL FORM DEL USUARIO Y PONES EL USER EN LA TABLA DE USERS
     return render_template('signup.html')
