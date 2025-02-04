@@ -5,6 +5,8 @@ from sqlalchemy.sql import func
 from datetime import datetime
 import uuid
 from flask_sqlalchemy import SQLAlchemy
+from flask_login import UserMixin
+
 
 
 def generate_uuid():
@@ -22,7 +24,7 @@ class Admin(db.Model):
     updated_at = db.Column(db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
 
 # User Model
-class User(db.Model):
+class User(UserMixin, db.Model):
     __tablename__ = 'users'
 
     id = db.Column(db.String(36), primary_key=True, default=generate_uuid) #!!convertir este id en secuencial(el primero 1 el segundo 2...)
