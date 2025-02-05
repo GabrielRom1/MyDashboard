@@ -1,0 +1,35 @@
+{% extends "base.html" %}{% block title %} services list {% endblock %}
+
+
+
+{% block content %}
+
+    <H1>This is the view services page</H1>
+
+
+  <table id="data" class="table table-striped">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Price</th>
+        <th>Cost</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for service in services_list %}
+        <tr>
+          <td>{{ service.name }}</td>
+          <td>{{ service.price }}</td>
+          <td>{{ service.cost }}</td>
+          <td>
+            <ul>
+                <li><a href="{{ url_for('services.edit_service', service_id=service.id) }}">Edit</a></li>
+                <li><a href="{{url_for('services.delete_service', service_id=service.id)}}">Delete</a></li>
+            </ul>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

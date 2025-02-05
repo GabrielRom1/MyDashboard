@@ -13,6 +13,7 @@ pip3 install flask flask-sqlalchemy
 
 pip install flask-login
 
-
+(env) PS C:\Users\gabri\OneDrive - University of Puerto Rico\Escritorio\Proyectos\MyDashboard\MyDashboard> $env:FLASK_APP = "main.py"    
+(env) PS C:\Users\gabri\OneDrive - University of Puerto Rico\Escritorio\Proyectos\MyDashboard\MyDashboard> flask run --host=0.0.0.0 --port=5000
 
 
