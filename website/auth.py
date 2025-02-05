@@ -22,21 +22,14 @@ def login():
     if request.method == 'POST':
         print("EN EL POST DE LOGIN")
 
-
-        # data = request.get_json()
-    
-        # # Procesa los datos
-        # email = data.get('email', 'No email provided')
         email = request.form.get('email')
         password = request.form.get('password')
-        # password = data.get('password', 'No password provided')
         
         admin = Admin.query.filter_by(email = email).first()
-        user = Admin.query.filter_by(email = email).first()
+        user = User.query.filter_by(email = email).first()
         
         if admin:
-            print(admin.name)
-            if password == admin.password:
+            if password == user.password:
                 print("admin password correct ")
                 session['admin'] = True
             else:
@@ -49,7 +42,6 @@ def login():
             if password == user.password:
                 print("user password correct ")
                 session['user'] = True
-
 
         else:
             flash("No user", 'danger')
@@ -80,12 +72,30 @@ def signup():
     if request.method == 'GET':
         render_template('signup.html')
     elif request.method == 'POST':
-        if create_user(True):
-            print("user created succesfully from signup")
-            return redirect(url_for('auth.login'))
-        else:
-            print("error when signup create user")
 
+        name = request.form.get('name')
+
+        email = request.form.get('email')
+        password = request.form.get('password')
+
+        print(f"Nombre recibido: {name}")
+        print(f"Email recibido: {email}")
+        print(f"Password recibido: {password}")
+
+        user = User(name=name, email = email, password=password ) # Crear un nuevo usuario
+
+        try:
+            db.session.add(user)
+            db.session.commit()  # Guardar cambios
+
+        except Exception as e:
+            print("Error")
+            db.session.rollback()  # Revertir cambios si hay un error
+            return "Error"
+        
+        print("user created succesfully from signup")
+        return redirect(url_for('auth.login'))
+        
 
     # AQUI LEES EL FORM DEL USUARIO Y PONES EL USER EN LA TABLA DE USERS
     return render_template('signup.html')

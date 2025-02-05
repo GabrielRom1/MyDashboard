@@ -22,7 +22,8 @@ def create_app():
 
     @login_manager.user_loader
     def load_user(user_id):
-        # since the user_id is just the primary key of our user table, use it in the query for the user
+        # pass
+        # # since the user_id is just the primary key of our user table, use it in the query for the user
         return User.query.get(int(user_id))
 
     # link db with the app
@@ -33,6 +34,7 @@ def create_app():
     from .install import install
     from .services import services
     from .users import users
+    from .appointments import appointments
 
 # to put a prefix (in this case non prefix) to every route
     app.register_blueprint(views, url_prefix='/')
@@ -40,7 +42,7 @@ def create_app():
     app.register_blueprint(install, url_prefix='/')
     app.register_blueprint(services, url_prefix='/')
     app.register_blueprint(users, url_prefix='/')
-
+    app.register_blueprint(appointments, url_prefix='/')
 
 
 
