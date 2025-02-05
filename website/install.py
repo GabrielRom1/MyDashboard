@@ -29,8 +29,9 @@ def install_post():
 
     
     # cambiar lo de id para que sea un id unico
-    first_Admin = Admin(name=name, email = email, password=password, id= generate_uuid() ) # Crear un nuevo usuario
-    first_User = User(name=name, email = email, password=password, id= generate_uuid() ) # Crear un nuevo usuario
+    first_User = User(name=name, email = email, password=password ) # Crear un nuevo usuario
+
+    first_Admin = Admin( email = email) # Crear un nuevo admin
 
     # Agregar el usuario a la base de datos
     try:
