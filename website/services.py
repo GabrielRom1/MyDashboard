@@ -10,37 +10,35 @@ services = Blueprint('services', __name__)
 @services.route('/create_service', methods = ['GET', 'POST'])
 @login_required
 def create_service():
-    #!! admin required
 
-    if request.method == 'GET':
-        print('create get')
-        return render_template('form_service.html', create = 1)
+    if session.get('admin'):
+
+        if request.method == 'GET':
+            print('create get')
+            return render_template('form_service.html', create = 1)
+        
+        if request.method == 'POST':
+            print("create post")
+            name = request.form.get('name')
+            price = request.form.get('price')
+            cost = request.form.get('cost')
+
+            category = request.form.get('category')
+
+            print(name)
+            print(price)
+            print(cost)
+            print(category)
+
+            # Convertir la cadena a un objeto datetime
     
-    if request.method == 'POST':
-        print("create post")
-        name = request.form.get('name')
-        price = request.form.get('price')
-        cost = request.form.get('cost')
+            new_service = Service(name=name, price=price, cost=cost, category=category)
+            db.session.add(new_service)
+            db.session.commit()  # Guardar cambios
 
-        category = request.form.get('category')
+            print("Service", name, "Added")
 
-        print(name)
-        print(price)
-        print(cost)
-        print(category)
-
-        # Convertir la cadena a un objeto datetime
- 
-        new_service = Service(name=name, price=price, cost=cost, category=category)
-        db.session.add(new_service)
-        db.session.commit()  # Guardar cambios
-
-        print("Service", name, "Added")
-
-        return redirect(url_for('services.create_service'))
-
-        # first_Admin = Admin(name=name, email = email,password=password, id= 1) # Crear un nuevo usuario
-
+            return redirect(url_for('services.create_service'))
         
     return "create_services"
 
@@ -48,51 +46,51 @@ def create_service():
 @services.route('/view_services', methods = ['GET'])
 @login_required
 def view_services():
-    #!! admin required
 
-    services = Service.query.all()
+    if session.get('admin'):
 
-    if not services:
-        print("empty services")
-    else:
-        print(services)
+        services = Service.query.all()
 
-    return render_template( 'view_services.html', services_list = services)
+        if not services:
+            print("empty services")
+        else:
+            print(services)
+
+        return render_template( 'view_services.html', services_list = services)
 
 @services.route('/edit_service/<service_id>', methods = ['GET', 'POST'])
 @login_required
 def edit_service(service_id):
-    #!! admin required
 
+    if session.get('admim'):
+        if request.method == 'GET':
+            return render_template('form_service.html', service_id=service_id,create = 0)
+        
+        service = Service.query.filter_by(id=service_id).first()
 
-    if request.method == 'GET':
-        return render_template('form_service.html', service_id=service_id,create = 0)
-    
-    service = Service.query.filter_by(id=service_id).first()
+        if request.method == 'POST':
+            print("edit post")
+            name = request.form.get('name')
+            price = request.form.get('price')
+            cost = request.form.get('cost')
 
-    if request.method == 'POST':
-        print("edit post")
-        name = request.form.get('name')
-        price = request.form.get('price')
-        cost = request.form.get('cost')
+            category = request.form.get('category')
 
-        category = request.form.get('category')
+            # Modificar el campo
+            service.name = name
+            service.price = price
+            service.cost = cost
+            service.category = category
 
-         # Modificar el campo
-        service.name = name
-        service.price = price
-        service.cost = cost
-        service.category = category
+            # Guardar cambios en la base de datos
+            try:
+                db.session.flush()
 
-        # Guardar cambios en la base de datos
-        try:
-            db.session.flush()
-
-            db.session.commit()
-            return redirect(url_for("services.view_services"))
-        except Exception as e:
-            db.session.rollback()  # Revertir cambios si hay un error
-            return e
+                db.session.commit()
+                return redirect(url_for("services.view_services"))
+            except Exception as e:
+                db.session.rollback()  # Revertir cambios si hay un error
+                return e
 
     return "edit page" + service_id
 
@@ -100,19 +98,20 @@ def edit_service(service_id):
 @services.route('/delete_service/<service_id>', methods = ['GET', 'POST'])
 @login_required
 def delete_service(service_id):
-    #!!  admin required
 
-    print(service_id)
+    if session.get('admin'):
 
-    service = Service.query.filter_by(id=service_id).first()
+        print(service_id)
 
-    if service:
-        print("delete", service)
-        db.session.delete(service)
-        db.session.commit()
+        service = Service.query.filter_by(id=service_id).first()
 
-    else:
-        return ("error")
+        if service:
+            print("delete", service)
+            db.session.delete(service)
+            db.session.commit()
 
-    return redirect(url_for("services.view_services"))
+        else:
+            return ("error")
+
+        return redirect(url_for("services.view_services"))
 

@@ -44,7 +44,7 @@ def create_user(from_signup = None):
         email = request.form.get('email')
         password = request.form.get('password')
         
-        #!! add a field of "make admin or not" and use an exception to make it works with signup
+        #!! add a field of "make admin or not" 
 
         print(f"Nombre recibido: {name}")
         print(f"Email recibido: {email}")
@@ -58,18 +58,14 @@ def create_user(from_signup = None):
         try:
             db.session.add(user)
             db.session.commit()  # Guardar cambios
-            if not from_signup:
-                return redirect(url_for("users.view_users"))
-            else:
-                return True
-            # return jsonify({'success': True, 'message': 'Usuario registrado con éxito',  'redirect_url': url_for('auth.login')}), 201
-        
+            
+            return redirect(url_for("users.view_users"))
+            
         except Exception as e:
             print("Error")
             db.session.rollback()  # Revertir cambios si hay un error
             return "Error"
-            # return jsonify({'success': False, 'message': str(e)}), 500
-        
+            
     elif request.method == 'GET':
         return render_template('form_user.html', create = 0)
 
