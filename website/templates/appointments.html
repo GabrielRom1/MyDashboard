@@ -1,0 +1,58 @@
+{% extends "base.html" %}{% block title %} appointments list {% endblock %}
+
+
+
+{% block content %}
+
+    <H1>This is the view appointments page</H1>
+
+    <button class="btn btn-secondary"> 
+
+        <a href="{{url_for('appointments.create_appointment')}}">Create appointment</a>
+
+
+    </button>
+        
+  <table id="data" class="table table-striped">
+
+
+    <thead>
+      <tr>
+        <th>Id</th>
+        <th>Name</th>
+        <th>date</th>
+        <th>hour</th>
+        <th>user_id</th>
+        <th>service_id</th>
+        <th>tip</th>
+        <th>actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for appointment in apointment_list %}
+        <tr>
+          <td>{{ appointment.id}}</td>
+          <td>{{ appointment.date}}</td>
+          <td>{{ appointment.hour}}</td>
+          <td>{{ appointment.user_id}}</td>
+          <td>{{ appointment.service_id}}</td>
+          <td>{{ appointment.tip}}</td>
+
+          <td>{{ user.name }}</td>
+          <td>
+            <ul>
+                <li><a href="{{ url_for('users.edit_user', user_id=user.id) }}">Edit</a></li>
+                <li><a href="{{url_for('users.delete_user', user_id=user.id)}}">Delete</a></li>
+                <li><a href="{{url_for('users.delete_user', user_id=user.id)}}">Admin</a></li>
+
+            </ul>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+    
+
+
+
+{% endblock %}
