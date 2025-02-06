@@ -18,6 +18,7 @@ def create_service():
             return render_template('form_service.html', create = 1)
         
         if request.method == 'POST':
+            
             print("create post")
             name = request.form.get('name')
             price = request.form.get('price')
