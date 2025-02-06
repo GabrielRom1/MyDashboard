@@ -30,14 +30,17 @@ def view_users():
 @users.route('/create_user', methods = ['GET', 'POST'])
 @login_required
 # maybe login required is problematic due to the import function on signup 
-def create_user(from_signup = None):
+def create_user():
 
-    if not session.get('admin') and from_signup == None:
+    if not session.get('admin'):
         print("unauthorized user tried to create a user")
         return ("unauthorized user tried to create other user")
+    
+    if request.method == 'GET':
+        return render_template('form_user.html', create = True)
 
 
-    if request.method == "POST":
+    elif request.method == "POST":
 
         name = request.form.get('name')
 
@@ -66,8 +69,7 @@ def create_user(from_signup = None):
             db.session.rollback()  # Revertir cambios si hay un error
             return "Error"
             
-    elif request.method == 'GET':
-        return render_template('form_user.html', create = 0)
+
 
 
 

@@ -34,7 +34,8 @@ def home():
 
     access = session.get('admin')
     
-    return render_template('home.html', access=access)
+    
+    return render_template('home.html', current_user=current_user)
 
 
 
