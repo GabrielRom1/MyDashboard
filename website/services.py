@@ -63,7 +63,7 @@ def view_services():
 @login_required
 def edit_service(service_id):
 
-    if session.get('admim'):
+    if session.get('admin'):
         if request.method == 'GET':
             return render_template('form_service.html', service_id=service_id,create = 0)
         

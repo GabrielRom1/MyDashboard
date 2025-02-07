@@ -32,6 +32,7 @@ def login():
             if password == user.password:
                 print("admin password correct ")
                 session['admin'] = True
+
             else:
                 print("Password incorrect")
                 flash("Incorrect password", 'danger')
